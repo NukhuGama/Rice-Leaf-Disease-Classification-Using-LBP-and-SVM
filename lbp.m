@@ -1,4 +1,4 @@
-function result = lbp(varargin) % image,radius,neighbors,mapping,mode) 
+function result = lbp(varargin) % image,radius,neighbors,mapping,mode)        
 
 
 

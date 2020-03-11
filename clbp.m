@@ -7,7 +7,7 @@
 %  no mapping. Possible values for MODE are
 %       'h' or 'hist'  to get a histogram of LBP codes
 %       'nh'           to get a normalized histogram
-%  Otherwise an CLBP code image is returned.
+%  Otherwise an CLBP code image is returned. 
 
 %  [CLBP_S,CLBP_M,CLBP_C] = CLBP(I,SP,MAPPING,MODE) computes the CLBP codes using n sampling
 %  points defined in (n * 2) matrix SP. The sampling points should be

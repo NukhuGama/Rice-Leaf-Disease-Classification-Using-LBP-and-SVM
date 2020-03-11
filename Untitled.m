@@ -4,20 +4,20 @@
 % % % Menghitung Jumlah file yang dibaca
 % % total_file = numel(file_name);
 % % 
-gambarasli = imread('Smut.jpg');
-gambarasli = segdaun2(gambarasli);
-[~, seg] = createMask(gambarasli);
+% gambarasli = imread('Smut.jpg');
+% gambarasli = segdaun2(gambarasli);
+% [~, seg] = createMask(gambarasli); 
 % [bar,kol,dim] = size(hsv);
 % sat = hsv(:,:,2);
 % gray = rgb2gray(gambarasli);
 % LBP_I = lbpI(sat,0.2);
-figure
-% % % a = segdaun2(a);
-imshow(gambarasli);
-
-figure
-% % % a = segdaun2(a);
-imshow(seg)
+% figure
+% % % % a = segdaun2(a);
+% imshow(gambarasli);
+% 
+% figure
+% % % % a = segdaun2(a);
+% imshow(seg)
 
 
 
@@ -36,8 +36,8 @@ imshow(seg)
 % title('Histogram Update SAturasi', 'FontSize', 16);
 % 
 % % 
-% load TrainData.mat
-% xlswrite('TrainData.xlsx',TrainImgs);
+load TrainData.mat
+xlswrite('TrainData.xlsx',TrainImgs);
 
 % imFog = imread('fog.jpg');
 % 

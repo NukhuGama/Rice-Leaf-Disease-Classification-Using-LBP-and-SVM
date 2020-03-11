@@ -68,14 +68,14 @@ entropi = -entropi;
 smoothness = 1 - 1 / (1 + varians_n);
 RMS = mean2(rms(F));
 % Inverse Difference Movement
-% in_diff = 0;
-% for i = 1:m
-%     for j = 1:n
-%         temp = F(i,j)./(1+(i-j).^2);
-%         in_diff = in_diff+temp;
-%     end
-% end
-% IDM = double(in_diff);
+in_diff = 0;
+for i = 1:m
+    for j = 1:n
+        temp = F(i,j)./(1+(i-j).^2);
+        in_diff = in_diff+temp;
+    end
+end
+IDM = double(in_diff);
 
 Stat.mu = mu;
 Stat.deviasi = deviasi;
@@ -84,4 +84,4 @@ Stat.energi = energi;
 Stat.entropi = entropi;
 Stat.smoothness = smoothness;
 Stat.RMS = RMS;
-% Stat.IDM = IDM;
+Stat.IDM = IDM;

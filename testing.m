@@ -1,16 +1,16 @@
-clear all; clc; close all;                                                                                                                                                                                                                                                                              
+clear all; clc; close all;                                                                                                                                                                                                                                                                                                                                                                                                     
 
 % Menepatkan Lokasi Data Train                                                                                        
 folder_name = 'Data Testing1'; 
-% Membaca nama file yang berformat .jpg 
-file_name = dir(fullfile(folder_name,'*.jpg'));     
+% Membaca nama file yang berformat .jpg                                    
+file_name = dir(fullfile(folder_name,'*.jpg'));                                                                                                          
 % Menghitung Jumlah file yang dibaca
-total_file = numel(file_name);
+total_file = numel(file_name); 
 
 TestImgs = []; 
 % TestImgs = zeros(total_file,20);    
 for i=1:total_file                                                                                                               
-    Img = imread(fullfile(folder_name, file_name(i).name));                   
+    Img = imread(fullfile(folder_name, file_name(i).name));                                 
     
     [~,imSeg] = createMask(Img); 
     % Segmentasi Gambar
@@ -24,44 +24,44 @@ for i=1:total_file
 %     %  HSV Colour
     hsv = rgb2hsv(rgb);
     Hue = hsv(:,:,1);
-    Sat = hsv(:,:,2);
-    Val = hsv(:,:,3);
+    Sat = hsv(:,:,2);  
+    Val = hsv(:,:,3);  
 %     
-    mean_Hue = mean2(Hue);
-    mean_Sat = mean2(Sat);
-    mean_Val = mean2(Val);
+%     mean_Hue = mean2(Hue);
+%     mean_Sat = mean2(Sat);
+%     mean_Val = mean2(Val);
     
     % LAB Colour
-    lab = rgb2lab(rgb);
-    mean_L = mean2(lab(:,:,1));
-    mean_A = mean2(lab(:,:,2));
-    mean_BB = mean2(lab(:,:,3));
+%     lab = rgb2lab(rgb);
+%     mean_L = mean2(lab(:,:,1));
+%     mean_A = mean2(lab(:,:,2));
+%     mean_BB = mean2(lab(:,:,3));
+% %     
+%     % Color Feature Extraction 
+%     stat = statwarna(rgb); 
 %     
-    % Color Feature Extraction
-    stat = statwarna(rgb); 
-    
-    mean_r = stat.mean_r;
-    mean_g = stat.mean_g;
-    mean_b = stat.mean_b;
-
-    dev_r = stat.dev_r;
-    dev_g = stat.dev_g;
-    dev_b = stat.dev_b; 
-
-    skew_r = stat.skew_r;
-    skew_g = stat.skew_g;
-    skew_b = stat.skew_b; 
-    
-    bw = im2bw(rgb,1); 
-    area = bwarea(bw);                                                     
+%     mean_r = stat.mean_r;
+%     mean_g = stat.mean_g;
+%     mean_b = stat.mean_b;
+% 
+%     dev_r = stat.dev_r;
+%     dev_g = stat.dev_g;
+%     dev_b = stat.dev_b; 
+% 
+%     skew_r = stat.skew_r;
+%     skew_g = stat.skew_g;
+%     skew_b = stat.skew_b; 
+%     
+%     bw = im2bw(rgb,1); 
+%     area = bwarea(bw);                                                     
 % 
 %     cur_r = stat.cur_r; 
 %     cur_g = stat.cur_g;
 %     cur_b = stat.cur_b;
     
     % LBP
-%     LBP = lbp(Sat); 
-    
+%     LBP = lbp(Sat,0.1); 
+%     
 %     Stat = stattekstur(LBP); 
 %     mu=Stat.mu;
 %     deviasi = Stat.deviasi;
@@ -70,19 +70,24 @@ for i=1:total_file
 %     entropi = Stat.entropi;
 %     smoothness = Stat.smoothness;
 %     RMS = Stat.RMS;
+%     
+%     TestImgs =
+%     [TestImgs;mu,deviasi,skewness,energi,entropi,smoothness,RMS];        
 %      
-%      LBPH = imhist(lbp(Hue)); 
-%      normLBPH = LBPH'/sum(LBPH);
+%      LBPH = imhist(lbp(Hue));                                            
+%      normLBPH = LBPH'/sum(LBPH);                                         
 
 %      LBPS = imhist(lbp(Sat));                                            
      
-     LBP = imhist(lbp(Sat));                                                
-     normLBP = LBP'/sum(LBP);                                              
+    histLBP = lbp(Sat,1,8,0,'nh');                                                                                                    
+%     histLBP = imhist(LBP);
+%    Normalisasi Histogram LBP 
+    normLBP = histLBP/sum(histLBP);
 
-%      TestImgs = [TestImgs;normLBP]; 
+     TestImgs = [TestImgs;normLBP];   
      
-     TestImgs = [TestImgs;mean_r,mean_g,mean_b,mean_Hue,mean_Sat,mean_Val,mean_L,mean_A,mean_BB,dev_r,dev_g,dev_b,...
-                skew_r,skew_g,skew_b,area,normLBP];                                                                        
+%      TestImgs = [TestImgs;mean_r,mean_g,mean_b,mean_Hue,mean_Sat,mean_Val,mean_L,mean_A,mean_BB,dev_r,dev_g,dev_b,...
+%                 skew_r,skew_g,skew_b];                                                                        
 %     
     % Area yang terjangkit Penyakit
 %     bw = im2bw(rgb);
@@ -104,7 +109,7 @@ for i=1:total_file
 %     Contrast = stats.Contrast;
 %     Correlation = stats.Correlation;
 %     Energy = stats.Energy;
-%     Homogeneity = stats.Homogeneity;
+%     Homogeneity = stats.Homogeneity;                                     
 %     
 %     H = imhist(glcms)';
 %     H = H/sum(H);
@@ -117,11 +122,7 @@ for i=1:total_file
 %     Area = sum(sum(H));
 %     
 % 
-% %       TestImgs(i,:) =  imhist(LBP,598);
-%    TestImgs(i,:)= [Contrast,Correlation,Energy,Homogeneity,CiriENT,CiriVAR,CiriSKEW,CiriKURT,Area]; 
 
-    
-%     lbpI2 = lbp(im);
 end;
 
 % test_label = zeros(1,total_file);  
