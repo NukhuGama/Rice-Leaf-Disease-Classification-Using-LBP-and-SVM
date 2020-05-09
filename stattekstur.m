@@ -1,13 +1,13 @@
-function [Stat] = stattekstur(F)
-% STATTEKSTUR Memperoleh statistik tekstur.
+function [Stat] = stattekstur(F)                 
+% STATTEKSTUR Memperoleh statistik tekstur.                                
 %     Masukan: F = citra berskala keabuan.
 %     Keluaran: Stat = berisi statistik tekstur
 %
 %     Didasarkan pada Gonzalez, Woods, dan Eddins, 2004
 
-[m, n, dim] = size(F);
+[m, n] = size(F);
 
-% Hitung frekuensi aras keabuan
+% Hitung frekuensi aras keabuan         
 L = 256;
 Frek = zeros(L,1);
 F = double(F);
@@ -66,16 +66,6 @@ entropi = -entropi;
 
 % Hitung R atau Smoothness
 smoothness = 1 - 1 / (1 + varians_n);
-RMS = mean2(rms(F));
-% Inverse Difference Movement
-in_diff = 0;
-for i = 1:m
-    for j = 1:n
-        temp = F(i,j)./(1+(i-j).^2);
-        in_diff = in_diff+temp;
-    end
-end
-IDM = double(in_diff);
 
 Stat.mu = mu;
 Stat.deviasi = deviasi;
@@ -83,5 +73,3 @@ Stat.skewness = skewness;
 Stat.energi = energi;
 Stat.entropi = entropi;
 Stat.smoothness = smoothness;
-Stat.RMS = RMS;
-Stat.IDM = IDM;

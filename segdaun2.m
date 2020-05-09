@@ -54,7 +54,7 @@ D = opening(C, H);
 %   yang tidak diproses sewaktu
 %   melakukan pemerataan nilai
 for baris=1 : m
-    D(baris,1) = 1;
+    D(baris,1) = 1;                                         
     D(baris,n) = 1;
 end
 

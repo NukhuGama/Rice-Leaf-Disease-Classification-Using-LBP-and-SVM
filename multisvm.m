@@ -1,4 +1,4 @@
-function [itrfin] = multisvm( T,C,test )
+function [itrfin, svmStruct] = multisvm( T,C,test )                                          
 %MULTISVM(3.0) classifies the class of given training vector according to the
 % given group and gives us result that which class it belongs. 
 % We have also to input the testing matrix
@@ -36,25 +36,25 @@ for tempind=1:itrind
     j=1;
     k=1;
     if(N>2)
-        itr=1;
+        itr=1;                                                             
         classes=0;
         cond=max(C)-min(C);
-        while((classes~=1)&&(itr<=length(u))&& size(C,2)>1 && cond>0)           
+        while((classes~=1)&&(itr<=length(u))&& size(C,2)>1 && cond>0)                
             %This while loop is the multiclass SVM Trick
             c1=(C==u(itr));
             newClass=c1;   
             %KernelScale = adalah nilai gamma dan BoxConstraint = nilai C
-            svmStruct = fitcsvm(T,newClass,'KernelFunction','rbf','KernelScale',0.02, 'BoxConstraint',1500); %'KernelScale', 1/sqrt(gamma));   % I am using rbf kernel function, you must change it also
+            svmStruct = fitcsvm(T,newClass,'KernelFunction','rbf','KernelScale',0.4, 'BoxConstraint',200000);   %'KernelScale', 1/sqrt(gamma));   % I am using rbf kernel function, you must change it also
             classes = predict(svmStruct,tst);
             
-            % This is the loop for Reduction of Training Set               
-            for i=1:size(newClass,2)
+            % This is the loop for Reduction of Training Set                                         
+            for i=1:size(newClass,2)                                       
                 if newClass(1,i)==0;  
                     c3(k,:)=T(i,:); 
                     k=k+1;
                 end
             end
-            T=c3;
+            T=c3;                                                          
             c3=[];
             k=1;
             
