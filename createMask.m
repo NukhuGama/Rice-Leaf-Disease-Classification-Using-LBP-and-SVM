@@ -17,11 +17,11 @@ I = rgb2hsv(RGB);
 channel1Min = 0.056; 
 channel1Max = 0.136;
 
-% Define thresholds for channel 2 based on histogram settings
+% Define thresholds for channel 2 based on histogram settings 
 channel2Min = 0.128;
-channel2Max = 1.000;
+channel2Max = 1.000; 
 
-% Define thresholds for channel 3 based on histogram settings
+% Define thresholds for channel 3 based on histogram settings 
 channel3Min = 0.087; 
 channel3Max = 0.913; 
 
@@ -29,7 +29,7 @@ channel3Max = 0.913;
 sliderBW = (I(:,:,1) >= channel1Min ) & (I(:,:,1) <= channel1Max) & ...
     (I(:,:,2) >= channel2Min ) & (I(:,:,2) <= channel2Max) & ...
     (I(:,:,3) >= channel3Min ) & (I(:,:,3) <= channel3Max);
-BW = sliderBW;
+BW = sliderBW; 
 
 % Initialize output masked image based on input image.
 maskedRGBImage = RGB;

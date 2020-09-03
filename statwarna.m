@@ -1,4 +1,4 @@
-function [stat] = statwarna(berkas)
+function [stat] = statwarna(berkas)  
 % Menghitung statistik warna pada citra RGB
 % Masukan:
 %    berkas berupa citra warna

@@ -1,13 +1,13 @@
-function varargout = GUI(varargin)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+function varargout = GUI(varargin)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
     % GUI MATLAB code for GUI.fig
-    %      GUI, by itself, creates a new GUI or raises the existing                           
-    %      singleton*.
+    %      GUI, by itself, creates a new GUI or raises the existing k                                                                 
+    %      singleton*. 
     
     %
     %      H = GUI returns the handle to a new GUI or the handle to
     %      the existing singleton*.                                        
     %
-    %      GUI('CALLBACK',hObject,eventData,handles,...) calls the local
+    %      GUI('CALLBACK',hObject,eventData,handles,...) calls the local   
     %      function named CALLBACK in GUI.M with the given input arguments.
     %
     %      GUI('Property','Value',...) creates a new GUI or raises the
@@ -23,7 +23,7 @@ function varargout = GUI(varargin)
 
     % Edit the above text to modify the response to help GUI
 
-    % Last Modified by GUIDE v2.5 15-Mar-2020 10:12:55
+    % Last Modified by GUIDE v2.5 06-Jun-2020 07:30:20
 
     % Begin initialization code - DO NOT EDIT
     gui_Singleton = 1;
@@ -112,9 +112,45 @@ function btn_loadImage_Callback(hObject, eventdata, handles)
         %I = imresize(I,[256,256]);
 
         axes(handles.axes1);
-        imshow(I);title('Input Image');
+        imshow(I);title('Input Image');                                                    
         handles.imageData = I;
+        % Mendapatkan Hasil
+        if strcmp(pathname,'D:\MATERIA SEMESTER VIII\TUGAS AKHIR\TAAAAA\Edit Data UCI\DATA UCI BARU\Testing\Bacterial\')...
+                || strcmp(pathname,'D:\MATERIA SEMESTER VIII\TUGAS AKHIR\TAAAAA\Edit Data UCI\DATA UCI BARU\Trai\Bacterial\')
+            prClass=1;
+        elseif strcmp(pathname,'D:\MATERIA SEMESTER VIII\TUGAS AKHIR\TAAAAA\Edit Data UCI\DATA UCI BARU\Testing\Brownspot\')...
+                || strcmp(pathname,'D:\MATERIA SEMESTER VIII\TUGAS AKHIR\TAAAAA\Edit Data UCI\DATA UCI BARU\Train\Brownspot\')
+            prClass=2;
+        elseif strcmp(pathname,'D:\MATERIA SEMESTER VIII\TUGAS AKHIR\TAAAAA\Edit Data UCI\DATA UCI BARU\Testing\Leafsmut\')... 
+                || strcmp(pathname,'D:\MATERIA SEMESTER VIII\TUGAS AKHIR\TAAAAA\Edit Data UCI\DATA UCI BARU\Train\Leafsmut\')
+            prClass=3;  
+        else
+            prClass=0;
+        end;
+        
+%          if strfind(filename,'Bacterial')
+%             prClass=1;
+%         elseif strfind(filename,'Brownspot')
+%             prClass=2;
+%         elseif strfind(filename,'Leafsmut')
+%             prClass=3; 
+%         end;
+         if (prClass==1)
+            disease = 'Bacterial Leaf Blight';                                             
+         elseif (prClass==2)      
+            disease = 'Brownspot';                                             
+         elseif (prClass==3)
+            disease = 'Leafsmut';
+         elseif (prClass==0)
+             disease = 'Tidak Terdaftar';
+         end;
+         set(handles.txt_actualDis,'String',disease);
+         
+        handles.actualClass=prClass;
+        
         guidata(hObject,handles);
+        
+        
     else
         return;
     end;
@@ -132,7 +168,7 @@ function btn_segImage_Callback(hObject, eventdata, handles)
     set(handles.btn_LBPVEC,'Enable','off')
     set(handles.btn_classify,'Enable','off')
     axes(handles.axes2);
-    imshow(seg_img);title('Segmented Image');
+    imshow(seg_img);title('Segmented Image');                              
     handles.seg_img = seg_img;
     guidata(hObject,handles);
     
@@ -183,34 +219,35 @@ function tabFeatEx_CellEditCallback(hObject, eventdata, handles)
     
 
 
-% --- Executes on button press in btn_LBPVEC.
-function btn_LBPVEC_Callback(hObject, eventdata, handles)                  
+% --- Executes on button press in btn_LBPVEC.                              
+function btn_LBPVEC_Callback(hObject, eventdata, handles)                                                                              
 % hObject    handle to btn_LBPVEC (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB        
+% eventdata  reserved - to be defined in a future version of MATLAB                  
 % handles    structure with handles and user data (see GUIDATA)
     set(handles.btn_classify,'Enable','on')                                                             
     featureExt =[];
     
-%     rgb = im2double(handles.seg_img);
+    rgb = im2double(handles.seg_img);                                      
 %     Color Feature
-%     stat = statwarna(rgb);
-%     mean_r = stat.mean_r;
-%     mean_g = stat.mean_g; 
-%     mean_b = stat.mean_b;
-% 
-%     dev_r = stat.dev_r;
-%     dev_g = stat.dev_g;
-%     dev_b = stat.dev_b;
+    stat = statwarna(rgb);
+    mean_r = stat.mean_r;
+    mean_g = stat.mean_g; 
+    mean_b = stat.mean_b;
+
+    dev_r = stat.dev_r;
+    dev_g = stat.dev_g;
+    dev_b = stat.dev_b;
     % SaturationChannel
     Sat = handles.Sat;
-    histLBP = lbp(Sat,1,8,0,'nh');                                                                                                                                                                                               
+    histLBP = lbp(Sat,2,8,0,'nh');                                                                                                                                                                                                                      
 %     histLBP = imhist(LBP);                                               
     normLBP = histLBP/sum(histLBP); 
-    featureExt = [featureExt;normLBP];                                     
     
-%     featureExt = [featureExt;normLBP,mean_r,mean_g,mean_b,dev_r,dev_g,dev_b];
+%     featureExt = [featureExt;normLBP];                                     
     
-    handles.featureExt = featureExt;
+    featureExt = [featureExt;normLBP,mean_r,mean_g,mean_b,dev_r];          
+    
+    handles.featureExt = featureExt;                                        
     set(handles.tabFeatEx,'Data',featureExt);
     
     guidata(hObject,handles);
@@ -228,17 +265,32 @@ function btn_classify_Callback(hObject, eventdata, handles)
 
     TestFeature = handles.featureExt;                                      
 
-    class = multisvm(TrainFeature, train_label, TestFeature);                                         
-
-    if (class==1)
-        disease = 'Bacterial';                                             
-    elseif (class==2)      
+    class_pred = multisvm(TrainFeature, train_label, TestFeature); 
+    
+    % Kelas Sebenarnya / Aktual 
+    class_actual =handles.actualClass;
+   % Hasil Prediksi
+    if (class_pred==1)
+        disease = 'Bacterial Leaf Blight';                                             
+    elseif (class_pred==2)      
         disease = 'Brownspot';                                             
-    elseif (class==3)
+    elseif (class_pred==3)
         disease = 'Leafsmut';
     end;
+    
+    % Perbandingan Penyakit sebenarnya dan yang dipredikisi sistem         
+    if (class_actual==1) || (class_actual==2) || (class_actual==3)
+        if (class_actual==class_pred)
+            disease_pred='True';
+        else
+            disease_pred='False';                                                                             
+        end;
+    else
+        disease_pred='';
+    end;
 
-    set(handles.txt_disease,'String',disease);                              
+    set(handles.txt_disease,'String',disease);
+    set(handles.txt_disPred,'String',disease_pred);
     
 
 
@@ -269,12 +321,23 @@ function btn_reset_Callback(hObject, eventdata, handles)
     set(handles.btn_satImage,'Enable','off')
     set(handles.btn_LBPVEC,'Enable','off')
     set(handles.btn_classify,'Enable','off')
+    set(handles.txt_actualDis,'String','');
     set(handles.txt_disease,'String','');
-
+    set(handles.txt_disPred,'String','');
+    set(handles.txt_actualDis,'String','');
 
 % --- Executes on button press in btn_exit.
-function btn_exit_Callback(hObject, eventdata, handles)
+function btn_exit_Callback(hObject, eventdata, handles)                    
 % hObject    handle to btn_exit (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
+% eventdata  reserved - to be defined in a future version of MATLAB        
 % handles    structure with handles and user data (see GUIDATA)
    close; 
+
+
+% --- Executes during object creation, after setting all properties.
+function axes1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to axes1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called 
+
+% Hint: place code in OpeningFcn to populate axes1

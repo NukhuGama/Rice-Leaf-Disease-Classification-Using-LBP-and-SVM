@@ -1,14 +1,14 @@
-clc;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-clear all;                                                                                                                                      
+clc;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+clear all;                                                                                                                                                                                      
 
-% Membaca Data Train Bacterial
+% Membaca Data Train Bacterial                                           
 folder_name = 'Train\Bacterial';                                 
 % Membaca nama file yang berformat .jpg                                    
 file_name = dir(fullfile(folder_name,'*.jpg')); 
 % Menghitung Jumlah file yang dibaca
 total_file = numel(file_name);
 for i = 1:total_file
-  ImTrain(i).image = imread(fullfile(folder_name, file_name(i).name));          
+  ImTrain(i).image = imread(fullfile(folder_name, file_name(i).name));            
   ImTrain(i).label = 1;
 end;
 

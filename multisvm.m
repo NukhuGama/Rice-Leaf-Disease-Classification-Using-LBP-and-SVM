@@ -1,4 +1,4 @@
-function [itrfin, svmStruct] = multisvm( T,C,test )                                          
+function [itrfin, svmStruct] = multisvm( T,C,test )                                                                
 %MULTISVM(3.0) classifies the class of given training vector according to the
 % given group and gives us result that which class it belongs. 
 % We have also to input the testing matrix
@@ -7,7 +7,7 @@ function [itrfin, svmStruct] = multisvm( T,C,test )
 %Outputs: itrfin=Resultant class(Group,USE ROW VECTOR MATRIX) to which tst
 %set belongs 
 
-%----------------------------------------------------------------------%
+%----------------------------------------------------------------------%   
 % IMPORTANT: DON'T USE THIS PROGRAM FOR CLASS LESS THAN 3,             %
 %            OTHERWISE USE svmtrain,svmclassify DIRECTLY or            %
 %            add an else condition also for that case in this program. %

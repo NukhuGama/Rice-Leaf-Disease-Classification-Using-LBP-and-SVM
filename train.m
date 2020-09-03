@@ -1,16 +1,18 @@
-clear all; clc; close all;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-                          
+tic                                                                                                                                                                                                                                                                 
+clear all; clc; close all;                                                                                                                            
+                       
 % Load Data Train                                                                                                      
-load DataTrain.mat
+load DataTrain.mat 
 %Total File                                                              
-total_file = length(ImTrain);                                                                                                                                                                                                                                 
+total_file = length(ImTrain);                                                                                                                                                                                                                                                                                                                
 
 TrainFeature = [];                                                         
 
 for i=1:total_file                                                                                                   
     Img = ImTrain(i).image;                                            
     
-    [~, imSeg] = createMask(Img);                                                                                 
+    [~, imSeg] = createMask(Img);                                          
+%     [~, imSeg] = createMask(imSeg);
 %     imSeg = segdaun2(Img);
     % Segmentasi Gambar
     rgb = im2double(imSeg);                                                
@@ -19,21 +21,21 @@ for i=1:total_file
     b = rgb(:, :, 3);
   
      
-%     stat = statwarna(rgb);                                                 
-%     
-%     mean_r = stat.mean_r;
-%     mean_g = stat.mean_g;
-%     mean_b = stat.mean_b;
+    stat = statwarna(rgb);                                                 
+    
+    mean_r = stat.mean_r;
+    mean_g = stat.mean_g;
+    mean_b = stat.mean_b;
 % 
-%     dev_r = stat.dev_r;
-%     dev_g = stat.dev_g;
-%     dev_b = stat.dev_b; 
+    dev_r = stat.dev_r;
+    dev_g = stat.dev_g;
+    dev_b = stat.dev_b; 
 % 
 %     skew_r = stat.skew_r;
 %     skew_g = stat.skew_g;
 %     skew_b = stat.skew_b;
 
-%     gray = rgb2gray(rgb);
+    gray = rgb2gray(rgb);                                                
 %    RGB ke HSV 
     hsv = rgb2hsv(rgb);                                                                                                                                                                                            
                                                                                                             
@@ -45,11 +47,11 @@ for i=1:total_file
 %     mean_Sat = mean(mean(Sat)); 
 %     mean_Val = mean(mean(Val));                                          
 %     
-%     std_Hue = std2(Hue);                                                                                             
+%     std_Hue = std2(Hue);                                                                                                                                
 %     std_Sat = std2(Sat);
 %     std_Val = std2(Val);
                                                                            
-    histLBP = lbp(Sat,1,8,0,'nh');                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+    histLBP = lbp(Sat,2,8,0,'nh');                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 %     histLBP = imhist(LBP);                                               
     normLBP = histLBP/sum(histLBP);                                                                                                          
 %     
@@ -57,36 +59,38 @@ for i=1:total_file
 %     bw = im2bw(rgb,0.28);                                                
 %     Area = bwarea(bw);
     
-%     TrainFeature = [TrainFeature;normLBP,mean_r,mean_g,mean_b];                                                                                                                                                        
+    TrainFeature = [TrainFeature;normLBP,mean_r,mean_g,mean_b,dev_r];                                                                                                                                                                                                                                                                  
     
-     TrainFeature = [TrainFeature;normLBP];                                                                       
+%      TrainFeature = [TrainFeature;normLBP];                                                                                                                                                        
     % Label Of Training
-    train_label(1,i) = ImTrain(i).label;                                                                                                                
-                            
-    
+    train_label(1,i) = ImTrain(i).label;                                                                                                                                                 
+%                             
+%     
 end;                                                                       
-
-
+% 
+% 
 % Menerapkan SVM                                                                                         
 [SVMTrain, SVMModel ] = multisvm(TrainFeature, train_label, TrainFeature);                                                                                      
 [a,~] = find(SVMTrain'==train_label);                                                                            
 total_rightTrain = sum(a);
 total_errorTrain = total_file - total_rightTrain;                                                                  
 % train_accuracy = (total_rightTrain/total_file) * 100;  
-[c_matrixTrain,Result] = confMatrix(SVMTrain,train_label);                                                                              
-train_accuracy = Result.Accuracy; 
+[c_matOutTrain,c_matrixTrain,Result] = confMatrix(SVMTrain,train_label);                                                                                           
+train_accuracy = Result.Accuracy;  
 
-% KFold 10 for Cross Validation
+% KFold 10 for Cross Validation                                            
 for n=1:30
-    CVSVMModel = crossval(SVMModel,'KFold', 8);                                                                                                                                                                                                                                                                                                                                                                                                     
+    CVSVMModel = crossval(SVMModel,'KFold', 10);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
     % Cross Validation misclassification error      
-    loss(n) = kfoldLoss(CVSVMModel);
+    loss = kfoldLoss(CVSVMModel);
+    Val_Accuracy(n) = (1-loss) * 100 ;      
 % Validation Accuracy  
 end;
-KFoldLoss = min(loss);                                                     
-Valid_Accuracy = (1-KFoldLoss) * 100 ;                                                                                                                   
+% KFoldLoss = min(loss);                                                     
+Valid_Accuracy = mean(Val_Accuracy) ;                                                                                                                                                                                                                                                                                               
 % Save Train SVM untuk data train    
 
-save TrainFeature.mat TrainFeature SVMTrain train_accuracy total_rightTrain total_errorTrain c_matrixTrain SVMModel Valid_Accuracy;    
+save TrainFeature.mat TrainFeature SVMTrain train_accuracy total_rightTrain total_errorTrain c_matOutTrain c_matrixTrain SVMModel Valid_Accuracy;    
 save TrainLabel.mat train_label;                                       
 %  
+toc;

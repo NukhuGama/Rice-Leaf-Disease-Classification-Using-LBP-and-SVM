@@ -1,10 +1,10 @@
-clc;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-clear all;                                                                 
+clc;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+clear all;                                                                                                             
 
 % Membaca Data Testing Bacterial 
 folder_name = 'Testing\Bacterial';                                 
 % Membaca nama file yang berformat .jpg                                    
-file_name = dir(fullfile(folder_name,'*.jpg')); 
+file_name = dir(fullfile(folder_name,'*.jpg'));                            
 % Menghitung Jumlah file yang dibaca
 total_file = numel(file_name);
 
@@ -26,7 +26,7 @@ for i = 1:total_file
 end;                                                                       
 
 
-% Membaca Data Testing LeafSmut
+% Membaca Data Testing LeafSmut  
 folder_name = 'Testing\Leafsmut';                                         
 % Membaca nama file yang berformat .jpg                                    
 file_name = dir(fullfile(folder_name,'*.jpg'));                            

@@ -1,5 +1,5 @@
 
-function yfit = classf(Xtrain,ytrain,Xtest)
+function yfit = classf(Xtrain,ytrain,Xtest)                                                  
 
     % Standardize the training predictor data. Then, find the 
     % principal components for the standardized training predictor

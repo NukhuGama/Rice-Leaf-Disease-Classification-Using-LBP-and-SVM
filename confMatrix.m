@@ -1,4 +1,4 @@
-  function [c_matrix,Result]= confMatrix(actual,predict)
+  function [c_mat,c_matrix,Result]= confMatrix(actual,predict)             
 	actual=actual(:);
 	predict=predict(:);
 	if length(actual) ~= length(predict)
@@ -9,9 +9,9 @@
 	condition=length(un_actual)==length(un_predict);
 	
 	if ~condition
-		error('Class List is not same in given inputs')
+		error('Class List is not same in given inputs')                    
 	end
-	condition=(sum(un_actual==un_predict)==length(un_actual));
+	condition=(sum(un_actual==un_predict)==length(un_actual));                     
 	if ~condition
 		error('Class List in given inputs are different')
     end
@@ -33,14 +33,15 @@
 		class_ref{i,1}=strcat('class',num2str(i),'==>',num2str(class_list(i)));
 		for j=1:n_class
 			val=(actual==class_list(i)) & (predict==class_list(j));
+           
 			c_matrix(i,j)=sum(val);
 			predict_class{i,j}=sum(val);
 		end
 		row_name{i}=strcat('Actual_class',num2str(i));
 		disp(class_ref{i})
 	end
-	
-
+	header = {'Bacterial Leaf Blight','Brown Spot','Leaf Smut'};
+    c_mat = [header; num2cell(c_matrix)];
 	%%
 	%Finding
 	%1.TP-True Positive
@@ -83,16 +84,15 @@
 		case 2
 			accuracy=(TP+TN)/(P+N);
 			Error=1-accuracy;
-			Result.Accuracy=(accuracy)*100;
+			Result.Accuracy=(accuracy)*100;  
 			Result.Error=(Error)*100;
 		otherwise
 			accuracy=(TP)./(P+N);
 			Error=(FP)./(P+N);
-			Result.Accuracy=sum(accuracy)*100;  
-			Result.Error=sum(Error)*100;
+			Result.Accuracy=sum(accuracy)*100;                             
+			Result.Error=sum(Error)*100; 
     end
     Result.TP = TP;
     Result.TN = TN;
     Result.FP = FP;
     Result.FN = FN;
-    
